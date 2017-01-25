@@ -1,17 +1,18 @@
 import * as express from 'express';
 import * as path from 'path';
-import { json, urlencoded } from 'body-parser';
+import * as bodyParser from 'body-parser';
+
+import { initRestApi } from './api'
 
 const app: express.Application = express();
 
 app.disable('x-powered-by');
 
-app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /** API */
-app.use('/api/ping', (req: express.Request, res: express.Response) => res.send("Pong: Server is running..."));
-
+initRestApi(app);
 
 // in production mode run application from dist folder
 if (app.get('env') === 'production') {
